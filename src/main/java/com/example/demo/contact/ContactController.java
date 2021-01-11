@@ -4,10 +4,8 @@ import com.example.demo.auth.TokenLogin;
 import com.example.demo.auth.AuthUser;
 import com.example.demo.user.Account;
 import com.example.demo.user.AccountService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor

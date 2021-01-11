@@ -56,8 +56,10 @@ public class TokenAop {
                     UserDetails userDetails;
                     try {
                         userDetails = accountService.loadUserByUsername(authUser.getEmail());
+                        log.info("Login As " + userDetails.getUsername());
                     }catch (UsernameNotFoundException e){
                         userDetails = accountService.createAccount(authUser);
+                        log.info("Sign Up User By " + userDetails.getUsername());
                     }
                     SecurityContextHolder.getContext().setAuthentication(new UsernameAuthentication(userDetails, true));
                     return joinPoint.proceed(new Object[]{authUser});
@@ -67,6 +69,7 @@ public class TokenAop {
                 }
             }
         }
+        log.info("Parameter User Not Found");
         throw new UnAuthorizedException();
     }
 }
