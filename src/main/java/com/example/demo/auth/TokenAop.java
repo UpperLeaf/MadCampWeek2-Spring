@@ -62,7 +62,13 @@ public class TokenAop {
                         log.info("Sign Up User By " + userDetails.getUsername());
                     }
                     SecurityContextHolder.getContext().setAuthentication(new UsernameAuthentication(userDetails, true));
-                    return joinPoint.proceed(new Object[]{authUser});
+
+                    Object[] joinPointArgs = joinPoint.getArgs();
+                    for(int j = 0; j < joinPointArgs.length; j++){
+                        if(joinPointArgs[j].toString().contains("AuthUser"))
+                            joinPointArgs[i] = authUser;
+                    }
+                    return joinPoint.proceed(joinPointArgs);
                 }catch (HttpClientErrorException ex){
                     log.info("Token Invalid");
                     throw new UnAuthorizedException();
