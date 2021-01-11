@@ -2,6 +2,7 @@ package com.example.demo.contact;
 
 import com.example.demo.auth.TokenLogin;
 import com.example.demo.auth.AuthUser;
+import com.example.demo.exception.UnAuthorizedException;
 import com.example.demo.user.Account;
 import com.example.demo.user.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,20 @@ public class ContactController {
     }
 
     @PostMapping("/contact")
-    public ResponseEntity<?> createContact(@TokenLogin AuthUser user, ContactResponseDto responseDto) {
+    public ResponseEntity<?> createContact(@TokenLogin AuthUser user, @RequestBody ContactResponseDto responseDto) {
         Account account = accountService.findByEmail(user.getEmail());
         Contact contact = contactService.createContact(account, responseDto);
+        return ResponseEntity.ok(ContactResponseDto.of(contact));
+    }
+
+    @PutMapping("/contact/{id}")
+    public ResponseEntity<?> updateContact(@TokenLogin AuthUser user, @PathVariable Long id, @RequestBody ContactResponseDto responseDto) {
+        Account account = accountService.findByEmail(user.getEmail());
+        Contact contact = contactService.findById(id);
+        if(contact.getAccount() != account)
+            throw new UnAuthorizedException();
+
+        contactService.updateContact(contact, responseDto);
         return ResponseEntity.ok(ContactResponseDto.of(contact));
     }
 

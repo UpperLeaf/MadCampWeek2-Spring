@@ -5,11 +5,11 @@ import com.example.demo.auth.TokenLogin;
 import com.example.demo.user.Account;
 import com.example.demo.user.AccountService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,15 +19,24 @@ public class PictureController {
     private final PictureService pictureService;
 
     @GetMapping("/picture")
-    public List<Picture> getAllPictures(@TokenLogin AuthUser user) {
+    public ResponseEntity<?> getAllPictures(@TokenLogin AuthUser user) {
         Account account = accountService.findByEmail(user.getEmail());
-        return pictureService.getAllPictures(account);
+        List<Picture> pictures = pictureService.getAllPictures(account);
+        List<PictureResponseDto> responseDtos = pictures.stream().map(PictureResponseDto::of).collect(Collectors.toList());
+        return ResponseEntity.ok(responseDtos);
     }
 
     @PostMapping("/picture")
-    public Picture uploadPicture(@TokenLogin AuthUser user, PictureRequestDto requestDto){
+    public ResponseEntity<?> uploadPicture(@TokenLogin AuthUser user, @RequestBody PictureRequestDto requestDto){
         Account account = accountService.findByEmail(user.getEmail());
+        Picture picture = pictureService.createPicture(account, requestDto);
+        return ResponseEntity.ok(PictureResponseDto.of(picture));
+    }
 
-        return null;
+    @DeleteMapping("/picture/{id}")
+    public ResponseEntity<?> deletePicture(@TokenLogin AuthUser user, @PathVariable Long id){
+        Account account = accountService.findByEmail(user.getEmail());
+        pictureService.deletePicture(account, id);
+        return ResponseEntity.ok().build();
     }
 }

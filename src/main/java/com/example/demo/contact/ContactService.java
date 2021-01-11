@@ -27,4 +27,14 @@ public class ContactService {
     public void deleteContact(Long id) {
         contactRepository.deleteById(id);
     }
+
+    public Contact updateContact(Contact contact, ContactResponseDto contactResponseDto) {
+        contact.setName(contactResponseDto.getName());
+        contact.setEmail(contactResponseDto.getEmail());
+        return contactRepository.save(contact);
+    }
+
+    public Contact findById(Long id) {
+        return contactRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+    }
 }
