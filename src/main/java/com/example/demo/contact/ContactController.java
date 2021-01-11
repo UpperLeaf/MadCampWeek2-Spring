@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @RestController
 public class ContactController {
@@ -18,14 +21,15 @@ public class ContactController {
     @GetMapping("/contact")
     public ResponseEntity<?> retrieveContact(@TokenLogin AuthUser user) {
         Account account = accountService.findByEmail(user.getEmail());
-        return ResponseEntity.ok(contactService.getAllContacts(account));
+        List<Contact> contactList = contactService.getAllContacts(account);
+        return ResponseEntity.ok(contactList.stream().map(ContactResponseDto::of).collect(Collectors.toList()));
     }
 
     @PostMapping("/contact")
     public ResponseEntity<?> createContact(@TokenLogin AuthUser user, ContactResponseDto responseDto) {
         Account account = accountService.findByEmail(user.getEmail());
         Contact contact = contactService.createContact(account, responseDto);
-        return ResponseEntity.ok(contact);
+        return ResponseEntity.ok(ContactResponseDto.of(contact));
     }
 
     @DeleteMapping("/contact/{id}")
