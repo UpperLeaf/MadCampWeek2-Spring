@@ -34,7 +34,7 @@ public class BlogController {
     public ResponseEntity<?> updateBlog(@TokenLogin AuthUser user, @RequestBody BlogRequestDto requestDto){
         Account account = accountService.findByEmail(user.getEmail());
         blogService.updateBlog(account, requestDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("{}");
     }
 
 
