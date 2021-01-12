@@ -58,7 +58,7 @@ public class BlogController {
     public ResponseEntity<?> updatePost(@TokenLogin AuthUser user, @RequestBody PostDto requestDto, @PathVariable Long id){
         Account account = accountService.findByEmail(user.getEmail());
         blogService.updatePost(account, requestDto, id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("{}");
     }
 
     @DeleteMapping("/post/{id}")
