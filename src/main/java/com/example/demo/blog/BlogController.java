@@ -6,10 +6,7 @@ import com.example.demo.user.Account;
 import com.example.demo.user.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,7 +29,7 @@ public class BlogController {
     }
 
     @PostMapping("/post")
-    public ResponseEntity<?> createPost(@TokenLogin AuthUser user, PostDto requestDto){
+    public ResponseEntity<?> createPost(@TokenLogin AuthUser user, @RequestBody PostDto requestDto){
         Account account = accountService.findByEmail(user.getEmail());
         return ResponseEntity.ok(blogService.createPost(account, requestDto));
     }
