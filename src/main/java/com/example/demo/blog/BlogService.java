@@ -16,6 +16,7 @@ public class BlogService {
     public BlogResponseDto findOrSaveBlog(Account account){
         Blog blog = blogRepository.findBlogByAccount(account).orElseGet(() -> {
             Blog sample = new Blog();
+            sample.setUserImageUrl(account.getImageUrl());
             sample.setAccount(account);
             return blogRepository.save(sample);
         });

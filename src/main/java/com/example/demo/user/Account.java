@@ -25,6 +25,8 @@ public class Account implements UserDetails {
     @Column(unique = true)
     private String email;
 
+    private String imageUrl;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));

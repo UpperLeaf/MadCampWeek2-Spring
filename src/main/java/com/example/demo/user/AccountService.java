@@ -22,6 +22,7 @@ public class AccountService implements UserDetailsService {
         Account account = new Account();
         account.setEmail(authUser.getEmail());
         account.setName(authUser.getName());
+        account.setImageUrl(authUser.getPicture());
         return accountRepository.save(account);
     }
 
