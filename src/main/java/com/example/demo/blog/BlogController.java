@@ -2,17 +2,24 @@ package com.example.demo.blog;
 
 import com.example.demo.auth.AuthUser;
 import com.example.demo.auth.TokenLogin;
+import com.example.demo.contact.Contact;
+import com.example.demo.contact.ContactResponseDto;
+import com.example.demo.contact.ContactService;
 import com.example.demo.user.Account;
 import com.example.demo.user.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @RestController
 public class BlogController {
 
     private final AccountService accountService;
+    private final ContactService contactService;
     private final BlogService blogService;
 
     @GetMapping("/blog")
@@ -27,6 +34,8 @@ public class BlogController {
     public ResponseEntity<?> getBlogById(@TokenLogin AuthUser user, String email){
         Account account = accountService.findByEmail(email);
         BlogResponseDto responseDto = blogService.getBlogByEmail(account);
+        List<Contact> contacts = contactService.getAllContacts(account);
+        responseDto.setContacts(contacts.stream().map(ContactResponseDto::of).collect(Collectors.toList()));
         return ResponseEntity.ok(responseDto);
     }
 

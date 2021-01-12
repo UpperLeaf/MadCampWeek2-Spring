@@ -1,5 +1,7 @@
 package com.example.demo.blog;
 
+import com.example.demo.contact.Contact;
+import com.example.demo.contact.ContactResponseDto;
 import lombok.Data;
 
 import java.util.List;
@@ -14,6 +16,7 @@ public class BlogResponseDto {
     private String userImageUrl;
 
     private List<PostDto> post;
+    private List<ContactResponseDto> contacts;
 
     public static BlogResponseDto of(Blog blog, List<Post> posts) {
         BlogResponseDto responseDto = new BlogResponseDto();
@@ -22,6 +25,12 @@ public class BlogResponseDto {
         responseDto.bannerImage = blog.getBannerImage();
         responseDto.userImageUrl = blog.getUserImageUrl();
         responseDto.post = posts.stream().map(PostDto::of).collect(Collectors.toList());
+        return responseDto;
+    }
+
+    public static BlogResponseDto of(Blog blog, List<Post> posts, List<Contact> contacts) {
+        BlogResponseDto responseDto = BlogResponseDto.of(blog, posts);
+        responseDto.contacts = contacts.stream().map(ContactResponseDto::of).collect(Collectors.toList());
         return responseDto;
     }
 }
