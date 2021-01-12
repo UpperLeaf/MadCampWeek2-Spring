@@ -1,11 +1,14 @@
 package com.example.demo.blog;
 
+import com.example.demo.exception.UnAuthorizedException;
 import com.example.demo.user.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class BlogService {
@@ -45,5 +48,31 @@ public class BlogService {
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
         return PostDto.of(postRepository.save(post));
+    }
+
+    public void updateBlog(Account account, BlogRequestDto requestDto) {
+        Blog blog = blogRepository.findBlogByAccount(account).orElseThrow(IllegalArgumentException::new);
+        blog.setTitle(requestDto.getBlogTitle());
+        blog.setDescription(requestDto.getDescription());
+    }
+
+    public void deletePost(Account account, Long id) {
+        Post post = postRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        Blog blog = blogRepository.findBlogByAccount(account).orElseThrow(IllegalArgumentException::new);
+        if(!post.getBlog().equals(blog)){
+            throw new UnAuthorizedException();
+        }
+        postRepository.delete(post);
+    }
+
+    public void updatePost(Account account, PostDto requestDto, Long id) {
+        Post post = postRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        Blog blog = blogRepository.findBlogByAccount(account).orElseThrow(IllegalArgumentException::new);
+        if(!post.getBlog().equals(blog)){
+            throw new UnAuthorizedException();
+        }
+        post.setTitle(requestDto.getTitle());
+        post.setContent(requestDto.getContent());
+        postRepository.save(post);
     }
 }

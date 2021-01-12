@@ -30,6 +30,14 @@ public class BlogController {
     }
 
 
+    @PostMapping("/blog")
+    public ResponseEntity<?> updateBlog(@TokenLogin AuthUser user, @RequestBody BlogRequestDto requestDto){
+        Account account = accountService.findByEmail(user.getEmail());
+        blogService.updateBlog(account, requestDto);
+        return ResponseEntity.ok().build();
+    }
+
+
     @GetMapping("/blog/other")
     public ResponseEntity<?> getBlogById(@TokenLogin AuthUser user, String email){
         Account account = accountService.findByEmail(email);
@@ -39,9 +47,25 @@ public class BlogController {
         return ResponseEntity.ok(responseDto);
     }
 
+
     @PostMapping("/post")
     public ResponseEntity<?> createPost(@TokenLogin AuthUser user, @RequestBody PostDto requestDto){
         Account account = accountService.findByEmail(user.getEmail());
         return ResponseEntity.ok(blogService.createPost(account, requestDto));
     }
+
+    @PutMapping("/post/{id}")
+    public ResponseEntity<?> updatePost(@TokenLogin AuthUser user, @RequestBody PostDto requestDto, @PathVariable Long id){
+        Account account = accountService.findByEmail(user.getEmail());
+        blogService.updatePost(account, requestDto, id);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/post/{id}")
+    public ResponseEntity<?> deletePost(@TokenLogin AuthUser user, @PathVariable Long id){
+        Account account = accountService.findByEmail(user.getEmail());
+        blogService.deletePost(account, id);
+        return ResponseEntity.ok().build();
+    }
+
 }
