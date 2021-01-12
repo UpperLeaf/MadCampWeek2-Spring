@@ -25,6 +25,12 @@ public class BlogService {
         return BlogResponseDto.of(blog, postList);
     }
 
+    public BlogResponseDto getBlogByEmail(Account account) {
+        Blog blog = blogRepository.findBlogByAccount(account).orElseThrow(IllegalArgumentException::new);
+        List<Post> postList = postRepository.findAllByBlog(blog);
+        return BlogResponseDto.of(blog, postList);
+    }
+
     public BlogResponseDto getBlogById(Long id) {
         Blog blog = blogRepository.findById(id).orElseThrow(IllegalArgumentException::new);
         List<Post> postList = postRepository.findAllByBlog(blog);

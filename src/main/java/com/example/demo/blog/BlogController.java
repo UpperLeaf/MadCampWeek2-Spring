@@ -23,9 +23,10 @@ public class BlogController {
     }
 
 
-    @GetMapping("/blog/{id}")
-    public ResponseEntity<?> getBlogById(@TokenLogin AuthUser user, @PathVariable Long id){
-        BlogResponseDto responseDto = blogService.getBlogById(id);
+    @GetMapping("/blog/other")
+    public ResponseEntity<?> getBlogById(@TokenLogin AuthUser user, String email){
+        Account account = accountService.findByEmail(email);
+        BlogResponseDto responseDto = blogService.getBlogByEmail(account);
         return ResponseEntity.ok(responseDto);
     }
 
