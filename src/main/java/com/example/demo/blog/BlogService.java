@@ -38,7 +38,6 @@ public class BlogService {
         post.setBlog(blog);
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
-
-        return PostDto.of(post);
+        return PostDto.of(postRepository.save(post));
     }
 }

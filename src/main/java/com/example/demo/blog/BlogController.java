@@ -18,7 +18,8 @@ public class BlogController {
     @GetMapping("/blog")
     public ResponseEntity<?> getBlog(@TokenLogin AuthUser user) {
         Account account = accountService.findByEmail(user.getEmail());
-        return ResponseEntity.ok(blogService.findOrSaveBlog(account));
+        BlogResponseDto responseDto = blogService.findOrSaveBlog(account);
+        return ResponseEntity.ok(responseDto);
     }
 
 
