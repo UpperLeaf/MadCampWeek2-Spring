@@ -3,11 +3,13 @@ package com.example.demo.blog;
 import com.example.demo.exception.UnAuthorizedException;
 import com.example.demo.user.Account;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 @Service
@@ -55,7 +57,9 @@ public class BlogService {
         Blog blog = blogRepository.findBlogByAccount(account).orElseThrow(IllegalArgumentException::new);
         blog.setTitle(requestDto.getBlogTitle());
         blog.setDescription(requestDto.getDescription());
+        log.info("블로그 업데이트");
         if(requestDto.getImage() != null) {
+            log.info("이미지 업데이트");
             blog.setProfileImage(requestDto.getImage());
             blog.setHasProfileImage(true);
         }
