@@ -21,6 +21,7 @@ public class BlogService {
             Blog sample = new Blog();
             sample.setUserImageUrl(account.getImageUrl());
             sample.setAccount(account);
+            sample.setHasProfileImage(false);
             return blogRepository.save(sample);
         });
         List<Post> postList = postRepository.findAllByBlog(blog);
@@ -54,6 +55,11 @@ public class BlogService {
         Blog blog = blogRepository.findBlogByAccount(account).orElseThrow(IllegalArgumentException::new);
         blog.setTitle(requestDto.getBlogTitle());
         blog.setDescription(requestDto.getDescription());
+        if(requestDto.getImage() != null) {
+            blog.setProfileImage(requestDto.getImage());
+            blog.setHasProfileImage(true);
+        }
+        blogRepository.save(blog);
     }
 
     public void deletePost(Account account, Long id) {

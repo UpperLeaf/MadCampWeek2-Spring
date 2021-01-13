@@ -15,11 +15,17 @@ public class Blog {
     private String title;
 
     private String description;
+
     @Lob
     private String bannerImage;
 
+    @Lob
+    private String profileImage;
+
     private String userImageUrl;
 
+    private Boolean hasProfileImage;
+    
     @OneToOne
     private Account account;
 }

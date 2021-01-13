@@ -15,6 +15,9 @@ public class BlogResponseDto {
     private String bannerImage;
     private String userImageUrl;
 
+    private String profileImage;
+    private Boolean hasProfileImage;
+
     private List<PostDto> post;
     private List<ContactResponseDto> contacts;
 
@@ -25,6 +28,8 @@ public class BlogResponseDto {
         responseDto.bannerImage = blog.getBannerImage();
         responseDto.userImageUrl = blog.getUserImageUrl();
         responseDto.post = posts.stream().map(PostDto::of).collect(Collectors.toList());
+        responseDto.hasProfileImage = blog.getHasProfileImage();
+        responseDto.profileImage = blog.getProfileImage();
         return responseDto;
     }
 
