@@ -24,8 +24,8 @@ public class Blog {
 
     private String userImageUrl;
 
-    private Boolean hasProfileImage;
-    
+    private Boolean hasProfileImage = false;
+
     @OneToOne
     private Account account;
 }

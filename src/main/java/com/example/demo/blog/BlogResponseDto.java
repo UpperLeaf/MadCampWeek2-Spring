@@ -16,7 +16,7 @@ public class BlogResponseDto {
     private String userImageUrl;
 
     private String profileImage;
-    private Boolean hasProfileImage;
+    private Boolean hasProfileImage = false;
 
     private List<PostDto> post;
     private List<ContactResponseDto> contacts;
